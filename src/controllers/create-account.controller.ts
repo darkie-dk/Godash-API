@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common'
 import { hash } from 'bcryptjs'
 import { PrismaService } from 'prisma/prisma/prisma.service'
-import { ZodValidationPipe } from 'src/pipes/zod-validation.pipe'
+import { ZodValidationPipe } from '@/pipes/zod-validation.pipe'
 import { z } from 'zod'
 
 const createAccountBodySchema = z.object({
@@ -18,7 +18,7 @@ const createAccountBodySchema = z.object({
 
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
 
-@Controller()
+@Controller('/accounts')
 export class CreateAccountController {
   constructor(private prisma: PrismaService) {}
 
@@ -45,7 +45,7 @@ export class CreateAccountController {
       data: {
         name,
         email,
-        passwordHash: hashedPassword,
+        password: hashedPassword,
       },
     })
   }
