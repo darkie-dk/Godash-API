@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Vendor {
   id        String   @id @default(uuid())
   name      String
   email     String   @unique
@@ -25,7 +25,7 @@ model User {
   Orders  Order[]
   Product Product[]
 
-  @@map("users")
+  @@map("vendors")
 }
 
 enum Role {
@@ -57,7 +57,7 @@ model Order {
   createdAt  DateTime    @default(now()) @map("created_at")
   updatedAt  DateTime?   @updatedAt @map("updated_at")
 
-  vendor    User        @relation(fields: [vendorId], references: [id])
+  vendor    Vendor      @relation(fields: [vendorId], references: [id])
   customer  Customer    @relation(fields: [customerId], references: [id])
   OrderItem OrderItem[]
 
@@ -91,7 +91,7 @@ model Product {
   price       Int
   category    String
 
-  vendor    User        @relation(fields: [vendorId], references: [id])
+  vendor    Vendor      @relation(fields: [vendorId], references: [id])
   OrderItem OrderItem[]
 
   @@map("products")
