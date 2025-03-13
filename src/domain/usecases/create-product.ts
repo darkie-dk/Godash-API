@@ -1,12 +1,12 @@
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Product } from '../entities/product'
-import type { Money } from '../entities/value-objects/Money'
 import type { ProductRepository } from '../repositories/products-repository'
 
 interface CreateProductUseCaseRequest {
   vendorId: string
   name: string
   description: string
-  price: Money
+  price: number
   category: string
 }
 
@@ -20,12 +20,12 @@ export class CreateProductUseCase {
     price,
     category,
   }: CreateProductUseCaseRequest) {
-    const product = new Product({
-      vendorId,
-      name,
-      description,
-      price,
+    const product = Product.create({
+      vendorId: new UniqueEntityId(vendorId),
       category,
+      description,
+      name,
+      price,
     })
 
     await this.productRepository.create(product)

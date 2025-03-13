@@ -1,27 +1,67 @@
-import type { Money } from './value-objects/Money'
+import { Entity } from '@/core/entities/entity'
+import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import type { Optional } from '@/core/types/optinal'
 
 interface ProductProps {
-  vendorId: string
+  vendorId: UniqueEntityId
   name: string
   description: string
-  price: Money
+  price: number
   category: string
+  createdAt: Date
+  updatedAt?: Date
 }
 
-export class Product {
-  public id?: string
-  public vendorId: string
-  public name: string
-  public description: string
-  public price: Money
-  public category: string
+export class Product extends Entity<ProductProps> {
+  get vendorId() {
+    return this.props.vendorId
+  }
 
-  constructor(props: ProductProps, id?: string) {
-    this.vendorId = props.vendorId
-    this.name = props.name
-    this.description = props.description
-    this.price = props.price
-    this.category = props.category
-    this.id = id
+  get name() {
+    return this.props.name
+  }
+
+  get description() {
+    return this.props.description
+  }
+
+  get price() {
+    return this.props.price
+  }
+
+  get category() {
+    return this.props.category
+  }
+
+  get createdAt() {
+    return this.props.createdAt
+  }
+
+  get updatedAt() {
+    return this.props.updatedAt
+  }
+
+  private touch() {
+    this.props.updatedAt = new Date()
+  }
+
+  set price(price: number) {
+    this.props.price = price
+    this.touch()
+  }
+
+  static create(
+    props: Optional<ProductProps, 'createdAt'>,
+    id?: UniqueEntityId,
+  ) {
+    const product = new Product(
+      {
+        ...props,
+        createdAt: new Date(),
+      },
+      id,
+    )
+
+    return product
   }
 }

@@ -29,10 +29,10 @@ model Vendor {
 }
 
 enum Role {
-  TRIAL
   ADMIN
-  VENDOR
   DELIVERY
+  TRIAL
+  VENDOR
 }
 
 model Customer {
