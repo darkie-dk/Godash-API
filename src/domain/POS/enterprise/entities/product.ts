@@ -1,10 +1,12 @@
 import { Entity } from '@/core/entities/entity'
 import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import type { Optional } from '@/core/types/optinal'
+import { Slug } from './value-objects/slug'
 
 interface ProductProps {
   vendorId: UniqueEntityId
   name: string
+  slug: Slug
   description: string
   price: number
   category: string
@@ -19,6 +21,10 @@ export class Product extends Entity<ProductProps> {
 
   get name() {
     return this.props.name
+  }
+
+  get slug() {
+    return this.props.slug
   }
 
   get description() {
@@ -45,18 +51,25 @@ export class Product extends Entity<ProductProps> {
     this.props.updatedAt = new Date()
   }
 
+  set name(name: string) {
+    this.props.name = name
+    this.props.slug = Slug.createFromText(name)
+    this.touch()
+  }
+
   set price(price: number) {
     this.props.price = price
     this.touch()
   }
 
   static create(
-    props: Optional<ProductProps, 'createdAt'>,
+    props: Optional<ProductProps, 'createdAt' | 'slug'>,
     id?: UniqueEntityId,
   ) {
     const product = new Product(
       {
         ...props,
+        slug: props.slug ?? Slug.createFromText(props.name),
         createdAt: new Date(),
       },
       id,
