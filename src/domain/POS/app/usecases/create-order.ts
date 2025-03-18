@@ -5,7 +5,6 @@ import { OrdersRepository } from '../repositories/order-repository'
 interface CreateOrderUseCaseRequest {
   vendorId: string
   customerId: string
-  orderItems: string
   amount: number
 }
 
@@ -19,13 +18,12 @@ export class CreateOrderUseCase {
   async execute({
     vendorId,
     customerId,
-    orderItems,
     amount,
   }: CreateOrderUseCaseRequest): Promise<CreateOrderUseCaseResponse> {
     const order = Order.create({
       vendorId: new UniqueEntityId(vendorId),
       customerId: new UniqueEntityId(customerId),
-      orderItems,
+
       amount,
     })
 

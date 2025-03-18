@@ -3,7 +3,7 @@ import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import type { Optional } from '@/core/types/optinal'
 import { Slug } from './value-objects/slug'
 
-interface ProductProps {
+export interface ProductProps {
   vendorId: UniqueEntityId
   name: string
   slug: Slug
@@ -57,8 +57,18 @@ export class Product extends Entity<ProductProps> {
     this.touch()
   }
 
+  set description(description: string) {
+    this.props.description = description
+    this.touch()
+  }
+
   set price(price: number) {
     this.props.price = price
+    this.touch()
+  }
+
+  set category(category: string) {
+    this.props.category = category
     this.touch()
   }
 

@@ -5,7 +5,6 @@ import type { Optional } from '@/core/types/optinal'
 interface OrderProps {
   vendorId: UniqueEntityId
   customerId: UniqueEntityId
-  orderItems: string
   createdAt: Date
   updatedAt?: Date
   amount: number
@@ -22,9 +21,5 @@ export class Order extends Entity<OrderProps> {
     )
 
     return order
-  }
-
-  get orderItems() {
-    return this.props.orderItems
   }
 }

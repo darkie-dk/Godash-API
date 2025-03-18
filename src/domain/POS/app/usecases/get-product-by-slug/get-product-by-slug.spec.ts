@@ -1,7 +1,6 @@
-import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { Product } from '../../enterprise/entities/product'
 import { GetProductBySlugUseCase } from './get-product-by-slug'
 import { InMemoryProductRepository } from 'test/repositories/in-memory-product'
+import { makeProduct } from 'test/factories/make-product'
 import { Slug } from '../../enterprise/entities/value-objects/slug'
 
 let inMemoryProductRepository: InMemoryProductRepository
@@ -14,16 +13,11 @@ describe('Get Product by Slug', () => {
   })
 
   test('gets a product by slug', async () => {
-    const newProduct = Product.create({
-      vendorId: new UniqueEntityId('1'),
-      name: 'Pizza M',
+    const newProduct = makeProduct({
       slug: Slug.create('pizza-m'),
-      description: 'Massa, molho de tomate, peperoni e queijo.',
-      category: 'Pizzas',
-      price: 4999,
     })
 
-    inMemoryProductRepository.create(newProduct)
+    await inMemoryProductRepository.create(newProduct)
 
     const { product } = await sut.execute({
       slug: 'pizza-m',
